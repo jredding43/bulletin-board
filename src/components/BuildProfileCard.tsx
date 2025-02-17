@@ -1,6 +1,7 @@
 import React from "react";
 import { UserProfileData } from "../types";
 
+
 const formatText = (text: string | undefined) => {
   return text?.split("\n").map((line, index) => (
     <p key={index} className="text-gray-700">{line}</p>
@@ -37,7 +38,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ userData, onSend }) => {
       {/* Profile Picture & Name */}
       <div className="flex flex-col items-center">
         <img
-          src={profilePic || "/default-profile.png"}
+          src={profilePic || "/bulletin-board/default-profile.png" }
           alt="Profile"
           className="w-32 h-32 object-cover rounded-full border-2 border-gray-300 shadow-md"
         />
