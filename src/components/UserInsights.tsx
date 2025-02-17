@@ -102,6 +102,7 @@ useEffect(() => {
           requiredSkills: jobDetails.requiredSkills || [],
           companyBenefits: jobDetails.companyBenefits || "No benefits listed",
           isFollowed: jobData.isFollowed ?? true,
+          category: "",
         };
 
         followedJobs.push(formattedJob);

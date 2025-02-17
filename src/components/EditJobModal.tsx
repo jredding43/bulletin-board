@@ -12,21 +12,23 @@ interface EditJobModalProps {
 
 const EditJobModal: React.FC<EditJobModalProps> = ({ job, onClose, onSave }) => {
     const [formData, setFormData] = useState<JobPost>(
-        job
-          ? { ...job, requiredSkills: Array.isArray(job.requiredSkills) ? job.requiredSkills : [] } // ✅ Ensure it's an array
-          : {
-              id: "",
-              jobTitle: "",
-              companyName: "",
-              jobDescription: "",
-              responsibilities: "",
-              salary: "",
-              hourly: "",
-              employmentType: "Full-time",
-              jobLocation: "",
-              requiredSkills: [],
-              companyBenefits: "",
-            }
+      job
+      ? { ...job, requiredSkills: Array.isArray(job.requiredSkills) ? job.requiredSkills : [], category: job.category || "" }
+      : {
+          id: "",
+          jobTitle: "",
+          companyName: "",
+          jobDescription: "",
+          responsibilities: "",
+          salary: "",
+          hourly: "",
+          employmentType: "",
+          jobLocation: "",
+          requiredSkills: [],
+          companyBenefits: "",
+          category: "", // ✅ Add this line
+        }
+    
       );
       
 
