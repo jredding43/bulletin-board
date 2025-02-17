@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { doc, updateDoc, getDoc } from "firebase/firestore";
 import { db } from "./firebaseConfig.ts";
@@ -29,7 +29,7 @@ const App: React.FC = () => {
     
     <AuthProvider>
       <WatchedJobsProvider>
-      <Router basename="/bulletin-board">
+      <Router>
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/home" element={<Home />} />
