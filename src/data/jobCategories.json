@@ -1,0 +1,242 @@
+[
+    {
+      "category": "Technology",
+      "jobs": [
+        "Software Development",
+        "Cybersecurity",
+        "Data Science & Analytics",
+        "IT Support & Networking",
+        "Artificial Intelligence & Machine Learning",
+        "Blockchain & Cryptocurrency",
+        "Cloud Computing",
+        "UI/UX Design",
+        "Game Development"
+      ]
+    },
+    {
+      "category": "Healthcare",
+      "jobs": [
+        "Nursing & Patient Care",
+        "Medical Assistants & Technicians",
+        "Pharmacy",
+        "Dental",
+        "Veterinary",
+        "Mental Health & Therapy",
+        "Medical Billing & Coding",
+        "Physical Therapy",
+        "Home Healthcare & Hospice"
+      ]
+    },
+    {
+      "category": "Construction & Trades",
+      "jobs": [
+        "General Contracting",
+        "Plumbing",
+        "Electrical Work",
+        "Carpentry",
+        "HVAC",
+        "Welding",
+        "Roofing",
+        "Masonry",
+        "Heavy Equipment Operation"
+      ]
+    },
+    {
+      "category": "Finance & Business",
+      "jobs": [
+        "Accounting & Tax Services",
+        "Financial Advising",
+        "Banking & Investments",
+        "Real Estate",
+        "Insurance",
+        "Business Consulting",
+        "Bookkeeping",
+        "Auditing"
+      ]
+    },
+    {
+      "category": "Education & Training",
+      "jobs": [
+        "K-12 Teaching",
+        "Higher Education",
+        "Tutoring",
+        "Corporate Training",
+        "Language Instruction",
+        "Special Education",
+        "Early Childhood Education"
+      ]
+    },
+    {
+      "category": "Retail & Sales",
+      "jobs": [
+        "Retail Management",
+        "Cashiers",
+        "Sales Representatives",
+        "Wholesale & Distribution",
+        "E-Commerce",
+        "Car Sales",
+        "Telemarketing"
+      ]
+    },
+    {
+      "category": "Hospitality & Tourism",
+      "jobs": [
+        "Hotel Management",
+        "Restaurant & Food Services",
+        "Event Planning",
+        "Bartending",
+        "Housekeeping",
+        "Travel & Tourism",
+        "Casino & Gaming"
+      ]
+    },
+    {
+      "category": "Transportation & Logistics",
+      "jobs": [
+        "Truck Driving",
+        "Delivery Services",
+        "Rideshare (Uber, Lyft, etc.)",
+        "Public Transit Operators",
+        "Warehouse & Distribution",
+        "Forklift Operation",
+        "Courier Services"
+      ]
+    },
+    {
+      "category": "Manufacturing & Industrial",
+      "jobs": [
+        "Factory Work",
+        "Machinists",
+        "Production Line Workers",
+        "Quality Control",
+        "Assembly & Packaging",
+        "CNC Machine Operators",
+        "Textile & Garment Manufacturing"
+      ]
+    },
+    {
+      "category": "Marketing & Media",
+      "jobs": [
+        "Digital Marketing",
+        "Graphic Design",
+        "Content Creation",
+        "Photography & Videography",
+        "Copywriting",
+        "Advertising",
+        "Social Media Management",
+        "Public Relations"
+      ]
+    },
+    {
+      "category": "Legal & Government",
+      "jobs": [
+        "Lawyers & Legal Assistants",
+        "Paralegals",
+        "Court Reporting",
+        "Law Enforcement",
+        "Firefighters",
+        "Public Administration",
+        "Military & Defense"
+      ]
+    },
+    {
+      "category": "Science & Engineering",
+      "jobs": [
+        "Civil Engineering",
+        "Mechanical Engineering",
+        "Electrical Engineering",
+        "Biomedical Engineering",
+        "Environmental Science",
+        "Chemistry & Research",
+        "Physics & Astronomy"
+      ]
+    },
+    {
+      "category": "Energy & Utilities",
+      "jobs": [
+        "Renewable Energy",
+        "Oil & Gas",
+        "Power Plant Operations",
+        "Solar & Wind Installation",
+        "Water Treatment",
+        "Electrical Grid Management"
+      ]
+    },
+    {
+      "category": "Agriculture & Farming",
+      "jobs": [
+        "Crop Farming",
+        "Livestock & Dairy",
+        "Fisheries",
+        "Forestry",
+        "Greenhouse & Horticulture",
+        "Landscaping & Groundskeeping"
+      ]
+    },
+    {
+      "category": "Creative & Performing Arts",
+      "jobs": [
+        "Music & Singing",
+        "Acting & Theater",
+        "Dance & Choreography",
+        "Writing & Publishing",
+        "Fine Arts & Sculpture",
+        "Film & Television Production"
+      ]
+    },
+    {
+      "category": "Non-Profit & Social Services",
+      "jobs": [
+        "Community Outreach",
+        "Fundraising",
+        "Counseling & Crisis Support",
+        "Volunteering",
+        "Disaster Relief",
+        "Religious & Faith-Based Services"
+      ]
+    },
+    {
+      "category": "Telecommunications",
+      "jobs": [
+        "Cable & Internet Installation",
+        "Radio & Television Broadcasting",
+        "Call Centers & Customer Support",
+        "Satellite Communications"
+      ]
+    },
+    {
+      "category": "Local & Gig Jobs",
+      "jobs": [
+        "Handyman Services",
+        "House Cleaning",
+        "Lawn Care & Landscaping",
+        "Pet Sitting & Dog Walking",
+        "Babysitting & Nanny Services",
+        "Car Detailing",
+        "Home Moving & Hauling",
+        "Snow Removal",
+        "Personal Shopping & Errands",
+        "Tutoring & Test Prep",
+        "Freelance Writing & Editing",
+        "Delivery (Food & Packages)",
+        "Junk Removal",
+        "Appliance Repair",
+        "Local Event Staffing",
+        "Private Security & Bodyguard",
+        "Seamstress & Alterations",
+        "Massage Therapy",
+        "Catering & Personal Chefs",
+        "Senior Care & Companion Services",
+        "Auto Repair & Mobile Mechanics",
+        "Yard Sales & Estate Sales",
+        "Home Organization & Decluttering"
+      ]
+    },
+    {
+      "category": "Other",
+      "jobs": [
+        "Other"
+      ]
+    }
+  ]
+  
