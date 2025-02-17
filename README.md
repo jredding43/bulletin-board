@@ -1,50 +1,77 @@
-# React + TypeScript + Vite
+Bulletin Board Project
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-Currently, two official plugins are available:
+======================================================================================================================================================================================
+About the Project
+======================================================================================================================================================================================
+This is my first full project using React and Tailwind CSS. The goal of this project is to create a bulletin board/job platform where users can post and find jobs locally in a simple, fair, and accessible way. The platform is designed to avoid recruiter dominance, ensuring that all job listings have equal visibility.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Features (Planned & Implemented)
 
-## Expanding the ESLint configuration
+🔹 User Profiles: Users can create interactive job-seeker/business profiles.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+🔹 Job Listings: Users can post job opportunities with detailed descriptions.
 
-- Configure the top-level `parserOptions` property like this:
+🔹 Filtering & Search: Ability to filter job postings by category, location, and availability.
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+🔹 User Insights: Display useful insights such as job trends and market updates.
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+🔹 Firebase Integration: The platform is backed by Firebase for authentication, database, and storage.
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+======================================================================================================================================================================================
+Current Status 
+======================================================================================================================================================================================
+This project is still a work in progress. Some features may not be fully functional yet, and improvements are being made as I continue learning and refining the development process.
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+=========================================================================================================================================
+Tech Stack 
+=========================================================================================================================================
+Frontend: React, TypeScript, Vite, Tailwind CSS
+
+Backend: Firebase (Authentication, Firestore, Storage)
+
+=========================================================================================================================================
+Getting Started
+=========================================================================================================================================
+Installation
+
+Clone the repository:
+
+git clone https://github.com/jredding43/bulletin-board.git
+
+Navigate to the project directory:
+
+cd bulletin-board
+
+Install dependencies:
+
+npm install
+
+Create a .env file in the root directory and add your Firebase configuration (see firebaseConfig.ts for environment variable names).
+
+Run the development server:
+
+npm run dev
+
+=========================================================================================================================================
+Future Plans 
+=========================================================================================================================================
+Improve UI and UX design
+
+Add real-time messaging between users
+
+Implement job application tracking
+
+Mobile responsiveness improvements
+
+
+=========================================================================================================================================
+Contributing
+=========================================================================================================================================
+Since this is my learning project, contributions are currently not open, but feedback and suggestions are always welcome! 
+
+
+=========================================================================================================================================
+License
+=========================================================================================================================================
+This project is open-source, and you are free to explore and learn from it. However, please respect that this is my original idea, and it should not be used for personal or commercial gain without my explicit permission
