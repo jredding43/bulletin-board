@@ -71,19 +71,31 @@ const handleSaveJobCard = async () => {
   setIsSubmitting(true);
 
   try {
-    // Verify user
+    // 🔹 Fetch user document to get profileId and jobId
     const userRef = doc(db, "users", currentUser.uid);
     const userSnap = await getDoc(userRef);
-    if (!userSnap.exists() || !userSnap.data()?.verified) {
-      setMessage("Your account is not verified. Please verify your email to post jobs.");
+
+    if (!userSnap.exists()) {
+      setMessage("User profile not found.");
       setIsSubmitting(false);
       return;
     }
 
-    // Save job data
+    const userData = userSnap.data();
+    const profileId = userData.profileId || null;
+    const jobId = userData.jobId || null;
+
+    if (!profileId || !jobId) {
+      setMessage("Error retrieving profileId or jobId. Please try again.");
+      setIsSubmitting(false);
+      return;
+    }
+
+    // 🔹 Save job data with profileId instead of creatorId
     const jobRef = collection(db, "jobCards");
     await addDoc(jobRef, {
-      creatorId: currentUser.uid,
+      jobId, // Attach jobId from user profile
+      profileId, // Use profileId instead of creatorId
       jobTitle,
       companyName,
       jobDescription,
@@ -113,7 +125,7 @@ const handleSaveJobCard = async () => {
     setCompanyBenefits("");
   } catch (error: unknown) {
     if (error instanceof Error) {
-      console.error("Error saving job card:", error);
+      console.error("❌ Error saving job card:", error);
       setMessage(`Failed to save job card: ${error.message}`);
     } else {
       console.error("An unknown error occurred:", error);
@@ -123,6 +135,7 @@ const handleSaveJobCard = async () => {
 
   setIsSubmitting(false);
 };
+
  
 const handleAddSkill = () => {
   if (newSkill.trim()) {

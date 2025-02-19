@@ -6,6 +6,9 @@ import { FaCamera } from "react-icons/fa";
 
 interface UserProfileData {
   uid: string;
+  profileId: string;
+  jobId:string;
+  messageId: string;
   firstName: string;
   lastName: string;
   email: string;
@@ -77,6 +80,9 @@ const UserProfile: React.FC<{ userId: string }> = ({ userId }) => {
   
           setUserData({
             uid: data.uid || "",
+            profileId: data.profileId || "",
+            jobId: data.jobId || "",
+            messageId: data.messageId || "",
             firstName: data.firstName || "",
             lastName: data.lastName || "",
             email: data.email || "",
@@ -361,6 +367,9 @@ const UserProfile: React.FC<{ userId: string }> = ({ userId }) => {
     try {
       const userRef = doc(db, "users", userId);
       await updateDoc(userRef, { 
+        profileId: userData.profileId, 
+        jobId: userData.jobId, 
+        messageId: userData.messageId,
         bio,
         skills: userData.skills || [],
         certs: userData.certs || [],
@@ -407,7 +416,7 @@ const UserProfile: React.FC<{ userId: string }> = ({ userId }) => {
           {profilePic ? (
             <img src={profilePic} alt="Profile" className="w-50 h-50 object-cover border-2 border-gray-300 shadow-md" />
           ) : (
-            <span className="bg-gray-300 w-40 h-40 flex items-center justify-center text-gray-700">
+            <span className="bg-gray-300 w-50 h-50 flex items-center justify-center text-gray-700">
               No Image
             </span>
           )}
@@ -437,6 +446,14 @@ const UserProfile: React.FC<{ userId: string }> = ({ userId }) => {
           <input className="w-full p-2 border rounded" value={userData.phone} readOnly placeholder="Phone" />
         </div>
       </div>
+
+      <div className="mt-4">
+        <h3 className="text-xl font-semibold"></h3>
+        <p><strong>Profile ID:</strong> {userData.profileId}</p>
+        <p><strong>Job ID:</strong> {userData.jobId}</p>
+        <p><strong>Message ID:</strong> {userData.messageId}</p>
+      </div>
+
 
       <div className="w-full h-[6px] bg-black my-4"></div>
 

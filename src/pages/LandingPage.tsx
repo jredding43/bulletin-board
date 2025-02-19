@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Terms from "../components/Terms"; 
 import { useNavigate } from "react-router-dom";
+import { v4 as uuidv4 } from "uuid";
 
 import { auth, db } from "../firebaseConfig.ts"; 
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
@@ -72,9 +73,17 @@ export default function LandingPage() {
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
-  
+
+      //generate id numbers
+      const profileId = uuidv4();
+      const jobId = uuidv4();
+      const messageId = uuidv4();
+    
       await setDoc(doc(collection(db, "users"), user.uid), {
         uid: user.uid,
+        profileId,
+        jobId,
+        messageId,
         firstName,
         lastName,
         email,

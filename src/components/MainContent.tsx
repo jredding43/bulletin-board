@@ -28,7 +28,7 @@ const MainContent: React.FC<MainContentProps> = ({ isAsideOpen, filters }) => {
   const [selectedJob, setSelectedJob] = useState<JobPost | null>(null);
   const { followedCards, toggleWatchJob } = useWatchedJobs();
 
-  // ✅ Fetch Jobs From Firestore
+  //  Fetch Jobs From Firestore
   useEffect(() => {
     const fetchJobs = async () => {
       setLoading(true);
@@ -36,27 +36,38 @@ const MainContent: React.FC<MainContentProps> = ({ isAsideOpen, filters }) => {
         const jobCollection = collection(db, "jobCards");
         const jobQuery = query(jobCollection, orderBy("createdAt", "desc"));
         const jobSnapshot = await getDocs(jobQuery);
-
+  
         console.log("🔥 Total Jobs Fetched:", jobSnapshot.docs.length);
-
+  
         if (jobSnapshot.empty) {
           console.warn("❌ No job posts found in Firestore.");
         }
-
-        const jobList = jobSnapshot.docs.map((doc) => ({
-          id: doc.id,
-          jobTitle: doc.data().jobTitle || "No Title",
-          companyName: doc.data().companyName || "Unknown Company",
-          jobLocation: doc.data().jobLocation || "Location not provided",
-          salary: doc.data().salary || "Not Provided",
-          hourly: doc.data().hourly || "",
-          employmentType: doc.data().employmentType || "Not specified",
-          requiredSkills: doc.data().requiredSkills || [],
-          jobDescription: doc.data().jobDescription || "No description available",
-          category: doc.data().jobCategory || "Other",
-          timestamp: doc.data().createdAt || null,
-        }));
-
+  
+        // Fetch all users to get active profileIds
+        const userCollection = collection(db, "users");
+        const userSnapshot = await getDocs(userCollection);
+        const activeProfileIds = new Set(userSnapshot.docs.map((doc) => doc.data().profileId));
+  
+        const jobList = jobSnapshot.docs
+          .map((doc) => ({
+            id: doc.id,
+            jobId: doc.data().jobId || "",
+            profileId: doc.data().profileId || "", 
+            jobTitle: doc.data().jobTitle || "No Title",
+            companyName: doc.data().companyName || "Unknown Company",
+            jobLocation: doc.data().jobLocation || "Location not provided",
+            salary: doc.data().salary || "Not Provided",
+            hourly: doc.data().hourly || "",
+            employmentType: doc.data().employmentType || "Not specified",
+            requiredSkills: doc.data().requiredSkills || [],
+            jobDescription: doc.data().jobDescription || "No description available",
+            category: doc.data().jobCategory || "Other",
+            timestamp: doc.data().createdAt || null,
+          }))
+          .filter((job) => job.profileId && activeProfileIds.has(job.profileId)); 
+  
+        console.log(" Filtered Jobs (Active Accounts Only):", jobList.length);
+  
         setJobPosts(jobList);
       } catch (error) {
         console.error("🔥 Firestore Error: Failed to fetch job posts.", error);
@@ -64,18 +75,19 @@ const MainContent: React.FC<MainContentProps> = ({ isAsideOpen, filters }) => {
         setLoading(false);
       }
     };
-
+  
     fetchJobs();
   }, []);
+  
 
-  // ✅ Filter Jobs Based on User Input
+  //  Filter Jobs Based on User Input
   useEffect(() => {
     let filtered = [...jobPosts];
 
     console.log("Original Jobs:", jobPosts);
     console.log("Applied Filters:", filters);
 
-    // ✅ Ensure the selected category filters the correct jobs
+    //  Ensure the selected category filters the correct jobs
     if (filters.category) {
       const categoryObj = jobCategories.find(
         (cat) => cat.category.toLowerCase() === filters.category!.toLowerCase()
@@ -91,7 +103,7 @@ const MainContent: React.FC<MainContentProps> = ({ isAsideOpen, filters }) => {
       }
     }
 
-    // ✅ Keyword-based filtering
+    // Keyword-based filtering
     if (filters.keyword) {
       const keyword = filters.keyword.toLowerCase();
       filtered = filtered.filter((job) =>
@@ -101,7 +113,7 @@ const MainContent: React.FC<MainContentProps> = ({ isAsideOpen, filters }) => {
       );
     }
 
-    // ✅ Other filters
+    //  Other filters
     filtered = filtered.filter((job) => {
       const jobSalary = job.salary ? parseFloat(job.salary.replace(/[^0-9.]/g, "")) : undefined;
       const minSalary = filters.minSalary ? parseFloat(filters.minSalary) : undefined;

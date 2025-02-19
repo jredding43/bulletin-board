@@ -5,6 +5,8 @@ import { Timestamp } from "firebase/firestore";
  */
 export interface JobPost {
   id: string;
+  jobId: string;
+  profileId: string;
   jobTitle: string;
   companyName: string;
   jobDescription: string;
@@ -25,6 +27,9 @@ export interface JobPost {
  */
 export interface UserProfileData {
   uid: string;
+  profileId: string;
+  jobId:string;
+  messageId: string;
   firstName: string;
   lastName: string;
   email: string;

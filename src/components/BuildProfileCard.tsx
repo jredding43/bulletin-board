@@ -21,7 +21,6 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ userData, onSend }) => {
     lastName,
     email,
     phone,
-    profilePic,
     bio,
     companyName = [],
     education = [],
@@ -35,29 +34,30 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ userData, onSend }) => {
 
   return (
     <div className="bg-white shadow-lg rounded-lg p-6 border border-gray-300 max-w-xl mx-auto">
-      {/* Profile Picture & Name */}
+      
+      {/* Name */}
       <div className="flex flex-col items-center">
-        <img
-          src={profilePic || "/bulletin-board/default-profile.png" }
-          alt="Profile"
-          className="w-32 h-32 object-cover rounded-full border-2 border-gray-300 shadow-md"
-        />
         {(firstName || lastName) && (
           <h2 className="text-2xl font-bold text-gray-800 mt-4">
             {firstName ?? ""} {lastName ?? ""}
           </h2>
         )}
-        {bio && <div className="mt-2 text-gray-600">{formatText(bio)}</div>}
-      </div>
+        </div>
 
       {/* Contact Info */}
-      {(email || phone) && (
-        <div className="mt-4 border-t pt-4">
-          <h3 className="text-lg font-semibold">Contact Info</h3>
-          {email && <p className="text-gray-700">📧 {email}</p>}
-          {phone && <p className="text-gray-700">📞 {phone}</p>}
-        </div>
-      )}
+        {(email || phone) && (
+          <div className="mt-4 border-t pt-4 text-left">
+            <h3 className="text-lg font-semibold">Contact Info</h3>
+            {email && <p className="text-gray-700">📧 {email}</p>}
+            {phone && <p className="text-gray-700">📞 {phone}</p>}
+          </div>
+        )}
+     
+
+      {/* CBio */}
+      <div className="mt-4 border-t pt-4 "></div>
+      <h3 className="text-lg font-semibold">Bio</h3>
+      {bio && <div className="mt-2 text-gray-600">{formatText(bio)}</div>}
 
       {/* Email Verification & Account Creation Date */}
       {emailVerified === false && (
@@ -165,7 +165,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ userData, onSend }) => {
         <div className="mt-6">
           <button
             className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 w-full"
-            onClick={() => onSend(userData)}
+            onClick={() => onSend(userData)} 
           >
             Send Profile Card
           </button>

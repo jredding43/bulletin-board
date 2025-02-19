@@ -11,11 +11,19 @@ interface EditJobModalProps {
   }
 
 const EditJobModal: React.FC<EditJobModalProps> = ({ job, onClose, onSave }) => {
-    const [formData, setFormData] = useState<JobPost>(
-      job
-      ? { ...job, requiredSkills: Array.isArray(job.requiredSkills) ? job.requiredSkills : [], category: job.category || "" }
+  const [formData, setFormData] = useState<JobPost>(
+    job
+      ? {
+          ...job,
+          jobId: job.jobId || "", // Ensure jobId is retained
+          profileId: job.profileId || "", // Ensure profileId is retained
+          requiredSkills: Array.isArray(job.requiredSkills) ? job.requiredSkills : [],
+          category: job.category || "",
+        }
       : {
           id: "",
+          jobId: "", 
+          profileId: "", 
           jobTitle: "",
           companyName: "",
           jobDescription: "",
@@ -26,10 +34,10 @@ const EditJobModal: React.FC<EditJobModalProps> = ({ job, onClose, onSave }) => 
           jobLocation: "",
           requiredSkills: [],
           companyBenefits: "",
-          category: "", // ✅ Add this line
+          category: "",
         }
-    
-      );
+  );
+  
       
 
   const [newSkill, setNewSkill] = useState("");
@@ -56,6 +64,8 @@ const EditJobModal: React.FC<EditJobModalProps> = ({ job, onClose, onSave }) => 
   
       // Always include salary/hourly, even if set to "0"
       const updatedData: Partial<JobPost> = {
+        jobId: formData.jobId, 
+        profileId: formData.profileId,
         jobTitle: formData.jobTitle,
         companyName: formData.companyName,
         jobDescription: formData.jobDescription,
@@ -64,7 +74,7 @@ const EditJobModal: React.FC<EditJobModalProps> = ({ job, onClose, onSave }) => 
         jobLocation: formData.jobLocation,
         requiredSkills: formData.requiredSkills,
         companyBenefits: formData.companyBenefits,
-        salary: formData.salary !== "" ? formData.salary : "0", // Always set a value
+        salary: formData.salary !== "" ? formData.salary : "0", 
         hourly: formData.hourly !== "" ? formData.hourly : "0",
       };
   

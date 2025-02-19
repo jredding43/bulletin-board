@@ -8,6 +8,7 @@ import { useAuth } from "../context/AuthContext.tsx";
 import { JobPost } from "../types";
 import { useWatchedJobs } from "..//components/WatchedJobsContext.tsx";
 
+
 interface UserInsightProps {
   userId: string;
 }
@@ -20,38 +21,67 @@ const UserInsights: React.FC<UserInsightProps> = ({ userId }) => {
   const [loading, setLoading] = useState(true);
 
   const { currentUser } = useAuth();
+  const [profileId, setProfileId] = useState<string | null>(null);
+
   const [selectedCard, setSelectedCard] = useState<JobPost | null>(null);
 
   const { followedCards, toggleWatchJob } = useWatchedJobs();
   
+  /* Fetch Profile ID first, then fetch jobs */
+  useEffect(() => {
+    const fetchProfileIdAndJobs = async () => {
+      if (!userId) {
+        console.warn(" No userId provided. Skipping job fetch.");
+        return;
+      }
 
+      setLoading(true);
 
- // Fetch Active Job Postings (User's Created Jobs)
- useEffect(() => {
-  const fetchActiveJobs = async () => {
-    if (!userId) return;
-    setLoading(true);
+      try {
+        console.log(`🔍 Fetching profileId for userId: ${userId}`);
 
-    try {
-      const jobsRef = collection(db, "jobCards");
-      const jobsQuery = query(jobsRef, where("creatorId", "==", userId));
-      const jobsSnapshot = await getDocs(jobsQuery);
+        // Get profileId from Firestore using Auth UID
+        const userDocRef = doc(db, "users", userId);
+        const userDocSnap = await getDoc(userDocRef);
 
-      const jobs = jobsSnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      })) as JobPost[];
+        if (!userDocSnap.exists()) {
+          console.warn(` No profile found for userId: ${userId}`);
+          setLoading(false);
+          return;
+        }
 
-      setActiveJobs(jobs);
-    } catch (error) {
-      console.error("Error fetching active job postings:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+        const userData = userDocSnap.data();
+        const fetchedProfileId = userData?.profileId;
 
-  fetchActiveJobs();
-}, [userId]);
+        if (!fetchedProfileId) {
+          console.warn(" No profileId found in user document.");
+          setLoading(false);
+          return;
+        }
+
+        setProfileId(fetchedProfileId);
+        console.log(` Found profileId: ${fetchedProfileId}, now fetching jobs.`);
+
+        // Fetch jobs using the correct profileId
+        const jobsRef = collection(db, "jobCards");
+        const jobsQuery = query(jobsRef, where("profileId", "==", fetchedProfileId));
+        const jobsSnapshot = await getDocs(jobsQuery);
+
+        const jobs = jobsSnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        })) as JobPost[];
+
+        setActiveJobs(jobs);
+      } catch (error) {
+        console.error("Error fetching profileId or jobs:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProfileIdAndJobs();
+  }, [userId]);
 
 // Fetch Followed Job Cards (Watched Jobs)
 useEffect(() => {
@@ -83,15 +113,18 @@ useEffect(() => {
         const jobSnap = await getDoc(jobRef);
 
         if (!jobSnap.exists()) {
-          console.warn("Job not found in jobCards, removing from followed:", jobId);
-          await deleteDoc(doc(db, "followedCards", docSnap.id)); // ❌ Auto-remove orphaned job
+          console.warn("Job not found, removing from watched:", jobId);
+          await deleteDoc(doc(db, "followedCards", docSnap.id)); 
           continue;
         }
+
 
         const jobDetails = jobSnap.data() as JobPost;
 
         const formattedJob: JobPost = {
           id: jobId,
+          jobId: jobDetails.jobId || jobId, 
+          profileId: jobDetails.profileId || "", 
           jobTitle: jobDetails.jobTitle || "Untitled Job",
           companyName: jobDetails.companyName || "Unknown Company",
           jobDescription: jobDetails.jobDescription || "No description available",
@@ -102,13 +135,14 @@ useEffect(() => {
           requiredSkills: jobDetails.requiredSkills || [],
           companyBenefits: jobDetails.companyBenefits || "No benefits listed",
           isFollowed: jobData.isFollowed ?? true,
-          category: "",
+          category: jobDetails.category || "Other",
         };
+        
 
         followedJobs.push(formattedJob);
       }
 
-      // 🔥 FIX: Use `useWatchedJobs()` context to update followed jobs
+      // context to update followed jobs
       console.log("Updated watched jobs:", followedJobs);
     } catch (error) {
       console.error("Error fetching followed jobs:", error);
@@ -121,42 +155,17 @@ useEffect(() => {
 }, [currentUser]);
 
 
-// Fetch Active Job Postings (User's Created Jobs)
-useEffect(() => {
-  const fetchActiveJobs = async () => {
-    setLoading(true); //  Set loading before fetching
-    try {
-      if (!currentUser?.uid) return;
-
-      const jobsRef = collection(db, "jobCards");
-      const jobsQuery = query(jobsRef, where("creatorId", "==", currentUser.uid));
-      const jobsSnapshot = await getDocs(jobsQuery);
-
-      const jobs = jobsSnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      })) as JobPost[];
-
-      setActiveJobs(jobs);
-    } catch (error) {
-      console.error("Error fetching active job postings:", error);
-    } finally {
-      setLoading(false); // Ensure loading is set to false after fetching
-    }
-  };
-
-  fetchActiveJobs();
-}, [currentUser]);
-
-
 const handleDeleteJob = async (jobId: string) => {
   try {
     await deleteDoc(doc(db, "jobCards", jobId));
     setActiveJobs((prev) => prev.filter((job) => job.id !== jobId));
+
+    console.log(` Deleted job: ${jobId}`);
   } catch (error) {
-    console.error("Error deleting job:", error);
+    console.error(" Error deleting job:", error);
   }
 };
+
 
 return (
   <div className="bg-white p-6 shadow-lg rounded-lg max-w-3xl mx-auto border border-gray-300">

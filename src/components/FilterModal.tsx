@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 interface FilterModalProps {
   isOpen: boolean;
@@ -9,13 +9,13 @@ interface FilterModalProps {
     minSalary?: string;
     maxSalary?: string;
     company?: string;
-    category?: string;
+    // category?: string;
     jobTitles?: string[];
     keyword?: string;
   }) => void;
 }
 
-// ✅ Job Categories & Matching Job Titles
+// Job Categories & Matching Job Titles
 const jobCategories: Record<string, string[]> = {
   "Technology": ["Software Development", "Cybersecurity", "Data Science", "IT Support", "AI & Machine Learning"],
   "Healthcare": ["Nursing", "Pharmacy", "Medical Assistants", "Physical Therapy"],
@@ -41,70 +41,118 @@ const jobCategories: Record<string, string[]> = {
 const FilterModal: React.FC<FilterModalProps> = ({ isOpen, onClose, onApplyFilter }) => {
   if (!isOpen) return null; // ✅ Prevent modal from rendering if closed
 
-  // ✅ Load saved filters from localStorage
-  const [filters, setFilters] = useState(() => {
+  //  Define type outside the component to avoid redefinition
+  type FilterState = {
+    keyword: string;
+    category: string;
+    jobTitles: string[];
+    employmentType: string;
+    location: string;
+    minSalary: string;
+    maxSalary: string;
+    company: string;
+  };
+
+  //  Load saved filters from localStorage OR use a default value
+  const [filters, setFilters] = useState<FilterState>(() => {
     try {
       const savedFilters = localStorage.getItem("jobFilters");
-      return savedFilters ? JSON.parse(savedFilters) : {};
+      return savedFilters
+        ? JSON.parse(savedFilters)
+        : {
+            keyword: "",
+            category: "",
+            jobTitles: [],
+            employmentType: "",
+            location: "",
+            minSalary: "",
+            maxSalary: "",
+            company: "",
+          };
     } catch (error) {
       console.error("Error parsing jobFilters JSON:", error);
-      return {};
+      return {
+        keyword: "",
+        category: "",
+        jobTitles: [],
+        employmentType: "",
+        location: "",
+        minSalary: "",
+        maxSalary: "",
+        company: "",
+      };
     }
   });
 
-  // ✅ Handle filter changes
-  const handleFilterChange = (key: keyof typeof filters, value: string) => {
-    setFilters((prev: Record<string, string | string[] | undefined>) => ({
-      ...prev,
-      [key]: value,
+  //  Handle filter changes
+  const handleFilterChange = (filterType: keyof FilterState, value: string | string[]) => {
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      [filterType]: value,
     }));
   };
-  
 
-  // ✅ Apply filters correctly
+  // Automatically update job titles when category changes
+  useEffect(() => {
+    if (filters.category) {
+      setFilters((prev) => ({
+        ...prev,
+        jobTitles: jobCategories[filters.category as keyof typeof jobCategories] || [],
+      }));
+    }
+  }, [filters.category]);
+
+  //  Apply filters correctly
   const handleApplyFilters = () => {
     let appliedFilters = { ...filters };
-  
-    // ✅ Assign correct job titles based on selected category
+
+    // ✅ Ensure job titles are properly set from category
     if (filters.category) {
       appliedFilters.jobTitles = jobCategories[filters.category as keyof typeof jobCategories] || [];
     } else {
       appliedFilters.jobTitles = [];
     }
-  
+
     console.log("Final Applied Filters:", appliedFilters); // Debugging
-  
+
     localStorage.setItem("jobFilters", JSON.stringify(appliedFilters));
     onApplyFilter(appliedFilters);
     onClose();
   };
-  
-  
-  
 
-  // ✅ Reset filters
+  //  Reset filters
   const handleResetFilters = () => {
-    const resetFilters = {
+    const resetFilters: FilterState = {
+      keyword: "",
+      category: "",
+      jobTitles: [],
       employmentType: "",
       location: "",
       minSalary: "",
       maxSalary: "",
       company: "",
-      category: "",
-      keyword: ""
     };
+
     setFilters(resetFilters);
     localStorage.removeItem("jobFilters");
     onApplyFilter(resetFilters);
     onClose();
   };
+  
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-96 text-black border border-black">
-        <h2 className="text-xl font-bold mb-4">Filter Jobs</h2>
+    <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
+    <div className="bg-white p-6 rounded-lg shadow-lg w-96 text-black border border-black">
+      <h2 className="text-xl font-bold mb-4">Filter Jobs</h2>
 
-        {/* ✅ Job Category */}
+
+      <form
+        onSubmit={(e) => {
+          e.preventDefault(); // Prevent page reload
+          handleApplyFilters();
+        }}
+      >
+        {/*  Job Category
         <label className="block mb-2">
           Job Category:
           <select
@@ -119,7 +167,7 @@ const FilterModal: React.FC<FilterModalProps> = ({ isOpen, onClose, onApplyFilte
               </option>
             ))}
           </select>
-        </label>
+        </label> */}
 
         {/* ✅ Employment Type */}
         <label className="block mb-2">
@@ -157,14 +205,14 @@ const FilterModal: React.FC<FilterModalProps> = ({ isOpen, onClose, onApplyFilte
             type="text"
             className="w-1/2 p-2 border rounded bg-white text-black border-black"
             placeholder="Min Salary"
-            onChange={(e) => handleFilterChange("minSalary", e.target.value)}
+            onChange={(e) => handleFilterChange("minSalary", String(e.target.value))}
             value={filters.minSalary || ""}
           />
           <input
             type="text"
             className="w-1/2 p-2 border rounded bg-white text-black border-black"
             placeholder="Max Salary"
-            onChange={(e) => handleFilterChange("maxSalary", e.target.value)}
+            onChange={(e) => handleFilterChange("maxSalary", String(e.target.value))}
             value={filters.maxSalary || ""}
           />
         </div>
@@ -181,7 +229,7 @@ const FilterModal: React.FC<FilterModalProps> = ({ isOpen, onClose, onApplyFilte
           />
         </label>
 
-        {/* ✅ Word Match (Search by Keyword) */}
+        {/* ✅ Keyword Match */}
         <label className="block mb-4">
           Keyword Match:
           <input
@@ -195,18 +243,20 @@ const FilterModal: React.FC<FilterModalProps> = ({ isOpen, onClose, onApplyFilte
 
         {/* ✅ Buttons */}
         <div className="flex justify-between mt-4">
-          <button className="bg-red-500 text-white px-4 py-2 rounded" onClick={onClose}>
+          <button type="button" className="bg-red-500 text-white px-4 py-2 rounded" onClick={onClose}>
             Cancel
           </button>
-          <button className="bg-blue-500 text-white px-4 py-2 rounded" onClick={handleApplyFilters}>
+          <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">
             Apply
           </button>
-          <button className="bg-gray-500 text-white px-4 py-2 rounded" onClick={handleResetFilters}>
+          <button type="button" className="bg-gray-500 text-white px-4 py-2 rounded" onClick={handleResetFilters}>
             Reset
           </button>
         </div>
-      </div>
+      </form>
     </div>
+  </div>
+
   );
 };
 
