@@ -100,7 +100,7 @@ const Home: React.FC = () => {
                     Open Filters
                 </button>
 
-                {/* ✅ Filter Modal - This was missing */}
+                {/*  Filter Modal */}
                 {isFilterModalOpen && (
                     <FilterModal
                         isOpen={isFilterModalOpen}

@@ -106,7 +106,7 @@ const FilterModal: React.FC<FilterModalProps> = ({ isOpen, onClose, onApplyFilte
   const handleApplyFilters = () => {
     let appliedFilters = { ...filters };
 
-    // ✅ Ensure job titles are properly set from category
+    // Ensure job titles are properly set from category
     if (filters.category) {
       appliedFilters.jobTitles = jobCategories[filters.category as keyof typeof jobCategories] || [];
     } else {
@@ -141,7 +141,7 @@ const FilterModal: React.FC<FilterModalProps> = ({ isOpen, onClose, onApplyFilte
   
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
+    <div className="fixed inset-0 flex items-center justify-center">
     <div className="bg-white p-6 rounded-lg shadow-lg w-96 text-black border border-black">
       <h2 className="text-xl font-bold mb-4">Filter Jobs</h2>
 
@@ -169,7 +169,7 @@ const FilterModal: React.FC<FilterModalProps> = ({ isOpen, onClose, onApplyFilte
           </select>
         </label> */}
 
-        {/* ✅ Employment Type */}
+        {/* Employment Type */}
         <label className="block mb-2">
           Employment Type:
           <select
@@ -186,7 +186,7 @@ const FilterModal: React.FC<FilterModalProps> = ({ isOpen, onClose, onApplyFilte
           </select>
         </label>
 
-        {/* ✅ Location */}
+        {/* Location */}
         <label className="block mb-2">
           Location:
           <input
@@ -198,7 +198,7 @@ const FilterModal: React.FC<FilterModalProps> = ({ isOpen, onClose, onApplyFilte
           />
         </label>
 
-        {/* ✅ Salary Range */}
+        {/* Salary Range */}
         <label className="block mb-2">Salary Range:</label>
         <div className="flex space-x-2">
           <input
@@ -217,7 +217,7 @@ const FilterModal: React.FC<FilterModalProps> = ({ isOpen, onClose, onApplyFilte
           />
         </div>
 
-        {/* ✅ Company Name */}
+        {/* Company Name */}
         <label className="block mb-2">
           Company Name:
           <input
@@ -229,7 +229,7 @@ const FilterModal: React.FC<FilterModalProps> = ({ isOpen, onClose, onApplyFilte
           />
         </label>
 
-        {/* ✅ Keyword Match */}
+        {/* Keyword Match */}
         <label className="block mb-4">
           Keyword Match:
           <input
@@ -241,7 +241,7 @@ const FilterModal: React.FC<FilterModalProps> = ({ isOpen, onClose, onApplyFilte
           />
         </label>
 
-        {/* ✅ Buttons */}
+        {/* Buttons */}
         <div className="flex justify-between mt-4">
           <button type="button" className="bg-red-500 text-white px-4 py-2 rounded" onClick={onClose}>
             Cancel

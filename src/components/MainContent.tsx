@@ -37,10 +37,10 @@ const MainContent: React.FC<MainContentProps> = ({ isAsideOpen, filters }) => {
         const jobQuery = query(jobCollection, orderBy("createdAt", "desc"));
         const jobSnapshot = await getDocs(jobQuery);
   
-        console.log("🔥 Total Jobs Fetched:", jobSnapshot.docs.length);
+        console.log(" Total Jobs Fetched:", jobSnapshot.docs.length);
   
         if (jobSnapshot.empty) {
-          console.warn("❌ No job posts found in Firestore.");
+          console.warn("No job posts found in Firestore.");
         }
   
         // Fetch all users to get active profileIds
@@ -70,7 +70,7 @@ const MainContent: React.FC<MainContentProps> = ({ isAsideOpen, filters }) => {
   
         setJobPosts(jobList);
       } catch (error) {
-        console.error("🔥 Firestore Error: Failed to fetch job posts.", error);
+        console.error(" Firestore Error: Failed to fetch job posts.", error);
       } finally {
         setLoading(false);
       }

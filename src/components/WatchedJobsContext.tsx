@@ -6,6 +6,7 @@ import { db } from "../firebaseConfig.ts";
 import { useAuth } from "../context/AuthContext";
 import { JobPost } from "../types";
 
+
 interface WatchedJobsContextType {
   followedCards: JobPost[];
   toggleWatchJob: (jobId: string) => Promise<void>;
@@ -35,13 +36,15 @@ export const WatchedJobsProvider: React.FC<{ children: React.ReactNode }> = ({ c
         const jobSnap = await getDoc(jobRef);
         if (!jobSnap.exists()) {
           console.warn("Job not found, removing from followedCards:", jobData.jobId);
-          await deleteDoc(doc(db, "followedCards", docSnap.id)); // ❌ Auto-remove orphaned job
+          await deleteDoc(doc(db, "followedCards", docSnap.id)); 
           continue;
         }
 
         const jobDetails = jobSnap.data() as JobPost;
         watchedJobs.push({
           id: jobData.jobId,
+          jobId: jobData.jobId,
+          profileId: jobData.profileId || "unknown-profile",
           jobTitle: jobDetails.jobTitle || "Untitled Job",
           companyName: jobDetails.companyName || "Unknown Company",
           jobDescription: jobDetails.jobDescription || "No description available",
@@ -90,12 +93,13 @@ export const WatchedJobsProvider: React.FC<{ children: React.ReactNode }> = ({ c
         const jobDetails = jobSnap.data() as JobPost;
   
         setFollowedCards((prev) => {
-          //  Ensure no duplicates
           if (prev.some((job) => job.id === jobId)) return prev;
           return [
             ...prev,
             {
               id: jobId,
+              jobId: jobId,
+              profileId: jobDetails.profileId || "unknown-profile", // Ensure it's defined
               jobTitle: jobDetails.jobTitle || "Untitled Job",
               companyName: jobDetails.companyName || "Unknown Company",
               jobDescription: jobDetails.jobDescription || "No description available",
@@ -109,7 +113,7 @@ export const WatchedJobsProvider: React.FC<{ children: React.ReactNode }> = ({ c
               isFollowed: true,
             },
           ];
-        });
+        });        
       }
     } catch (error) {
       console.error("🔥 Error toggling watch status:", error);

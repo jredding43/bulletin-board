@@ -27,7 +27,7 @@ const Header: React.FC = () => {
         navigate("/");
       }
     } catch (error) {
-      console.error("❌ Logout failed:", error);
+      console.error(" Logout failed:", error);
     }
   };
 
